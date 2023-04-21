@@ -21,7 +21,7 @@ public class ApiController {
 		}
 	
 
-    @GetMapping("/myapi")
+	@GetMapping(value = "/myapi", produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String callApi() throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://api.kcisa.kr/API_CNV_050/request"); /*URL*/

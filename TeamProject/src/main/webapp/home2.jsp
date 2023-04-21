@@ -50,9 +50,6 @@
 		      console.error("AJAX Request Failed: " + textStatus, errorThrown);
 		    });
     </script>
-	
-	
-	
 		
 	<%@ include file="footer.jsp" %>
 </body>
