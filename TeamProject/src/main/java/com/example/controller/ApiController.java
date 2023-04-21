@@ -28,14 +28,13 @@ public class ApiController {
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=7722e809-bbcd-419b-a769-f4dfe7b83fa1"); /*서비스키*/
         urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*세션당 요청레코드수*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지수*/
-        urlBuilder.append("&" + URLEncoder.encode("keyword","UTF-8") + "=" + URLEncoder.encode("기타", "UTF-8")); /*검색어*/
 
         System.out.println(urlBuilder.toString());
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
+        conn.setRequestProperty("Accept", "application/json");
         System.out.println("Response code: " + conn.getResponseCode());
 
         BufferedReader rd;
@@ -52,7 +51,7 @@ public class ApiController {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = rd.readLine()) != null) {
-
+             System.out.println(line);
             sb.append(line);
 
         }

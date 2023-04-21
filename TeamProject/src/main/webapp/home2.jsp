@@ -25,8 +25,9 @@
 	<%@ include file="main_nav.jsp" %>
 	
 	<h1></h1>
-	ssssss
+
 	 <script>
+	 
 	 $.ajax({
 		    method: "GET",
 		    url: "http://api.kcisa.kr/API_CNV_050/request",
@@ -50,6 +51,7 @@
 		      console.error("AJAX Request Failed: " + textStatus, errorThrown);
 		    });
     </script>
+    
 		
 	<%@ include file="footer.jsp" %>
 </body>
