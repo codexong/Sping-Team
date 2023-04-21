@@ -8,24 +8,25 @@
 
 	String id = request.getParameter("id");
 	String password = request.getParameter("password");
+	String name = request.getParameter("name");
 	String mail1 = request.getParameter("mail1");
 	String mail2 = request.getParameterValues("mail2")[0];
 	String mail = mail1 + "@" + mail2;
-	String name = request.getParameter("name");
 	String nickname = request.getParameter("nickname");
-	
 
 %>
 
 <sql:setDataSource var="dataSource"
-	url="jdbc:oracle:thin:@localhost:1521:xe"
-	driver="oracle.jdbc.driver.OracleDriver" user="culture" password="culture" />
+	url="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"
+	driver="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" user="culture" password="culture" />
 
 <sql:update dataSource="${dataSource}" var="resultSet">
-   	INSERT INTO MEMBER VALUES(?, ?, ?)
+   	INSERT INTO MEMBER VALUES(?, ?, ?, ?, ?)
     <sql:param value="<%=id%>"/>
 	<sql:param value="<%=password%>"/>
 	<sql:param value="<%=name%>"/>
+	<sql:param value="<%=mail%>"/>
+	<sql:param value="<%=nickname%>"/>
 </sql:update>
 
 <c:if test="${resultSet>=1}">

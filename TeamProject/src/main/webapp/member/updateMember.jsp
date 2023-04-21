@@ -14,8 +14,8 @@
 	
 %>
 <sql:setDataSource var="dataSource"
-	url="jdbc:oracle:thin:@localhost:1521:xe"
-	driver="oracle.jdbc.driver.OracleDriver" user="study" password="study"/>
+	url="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"
+	driver="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" user="culture" password="culture" />
 
 <sql:query dataSource="${dataSource}" var="resultSet">
    SELECT * FROM MEMBER WHERE ID=?

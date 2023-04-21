@@ -58,12 +58,17 @@
 			<div class="input-group mb-3">
 				<label class="input-group-text">이메일</label>
 				<input type="text" class="form-control" name="mail1" maxlength="50">@ 
-				<select name="mail2">
+				<select name="mail2"class="form-control">
 					<option>naver.com</option>
 					<option>daum.net</option>
 					<option>gmail.com</option>
 					<option>nate.com</option>
 				</select>			
+			</div>
+			
+			<div class="input-group mb-3">
+				<label class="input-group-text">닉네임</label>
+				<input name="nickname" type="text" class="form-control" placeholder="nickname" >
 			</div>
 	
 			<div class="form-group row" style="margin-top: 10px">

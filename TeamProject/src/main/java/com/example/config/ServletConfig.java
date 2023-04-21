@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.example.controller", "com.example.exception"})
+@ComponentScan(basePackages = {"com.example.controller"})
 public class ServletConfig implements WebMvcConfigurer{
 	
 	
@@ -19,7 +19,7 @@ public class ServletConfig implements WebMvcConfigurer{
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
 		bean.setViewClass(JstlView.class);
 		bean.setPrefix("/WEB-INF/view/");
-		bean.setSuffix(".jsp");
+		bean.setSuffix(".jsp"); 
 		registry.viewResolver(bean);
 	}
 	

@@ -12,8 +12,8 @@
 %>
 
 <sql:setDataSource var="dataSource"
-	url="jdbc:oracle:thin:@localhost:1521:xe"
-	driver="oracle.jdbc.driver.OracleDriver" user="study" password="study"/>
+	url="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"
+	driver="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" user="culture" password="culture" />
 
 <sql:update dataSource="${dataSource}" var="resultSet">
    	UPDATE MEMBER SET PASSWORD=?, NAME=? WHERE ID=?

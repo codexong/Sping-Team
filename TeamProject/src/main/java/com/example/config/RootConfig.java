@@ -8,10 +8,13 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
+@ComponentScan(basePackages = {"com.example.controller"})
 @ComponentScan(basePackages = {"com.example.service"})
 @MapperScan(basePackages = {"com.example.mapper"})
 
@@ -38,4 +41,5 @@ public class RootConfig {
 		sqlSessionFactory.setDataSource(dataSource());
 		return (SqlSessionFactory) sqlSessionFactory.getObject();
 	}
+	
 }
