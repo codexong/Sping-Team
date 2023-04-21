@@ -8,16 +8,18 @@
 
 	String id = request.getParameter("id");
 	String password = request.getParameter("password");
+	String mail1 = request.getParameter("mail1");
+	String mail2 = request.getParameterValues("mail2")[0];
+	String mail = mail1 + "@" + mail2;
 	String name = request.getParameter("name");
+	String nickname = request.getParameter("nickname");
+	
 
-	Date currentDatetime = new Date(System.currentTimeMillis());
-	java.sql.Date sqlDate = new java.sql.Date(currentDatetime.getTime());
-	java.sql.Timestamp timestamp = new java.sql.Timestamp(currentDatetime.getTime());
 %>
 
 <sql:setDataSource var="dataSource"
 	url="jdbc:oracle:thin:@localhost:1521:xe"
-	driver="oracle.jdbc.driver.OracleDriver" user="study" password="study" />
+	driver="oracle.jdbc.driver.OracleDriver" user="culture" password="culture" />
 
 <sql:update dataSource="${dataSource}" var="resultSet">
    	INSERT INTO MEMBER VALUES(?, ?, ?)
