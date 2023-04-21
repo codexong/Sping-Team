@@ -22,6 +22,7 @@
 <body>
    <h1>API 결과</h1>
 	<div id="result"></div>
+	<div id="period"></div>
 	
 	<script>
 		function callApi() {
@@ -33,10 +34,11 @@
 		    	data  = JSON.parse(data)
 		    	alert(data)
 		      // API 호출 성공 시 결과를 화면에 표시
-		      var items = data.response.items.item;
-		      for (var i = 0; i < items.length; i++) {
-		        $("#result").append("<div>" + items[i].title + "</div>");
-		      }
+		       console.log(data);
+		     
+		        $("#result").append(data.response.body.items.item[0].title);
+		        $("#period").append(data.response.body.items.item[0].period);
+		    
 		    },
 		    error: function(error) {
 		      // API 호출 실패 시 에러 메시지를 화면에 표시
