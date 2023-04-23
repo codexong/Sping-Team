@@ -27,29 +27,20 @@
 	<h1></h1>
 
 	 <script>
-	 
-	 $.ajax({
-		    method: "GET",
-		    url: "http://api.kcisa.kr/API_CNV_050/request",
-		    data: {
-				      
-			    	serviceKey: "5cf87b5d-627f-4ff6-b396-318e3e43bce7",
-			    	numOfRows: "30",
-			        pageNo: "4"
-		   		   },
-		    headers: { Accept: "application/json"}
-		  })
-		    .done(function(msg) {
-		      console.log(msg);
-		      console.log(msg.response.body.items);
-		      console.log(msg.response.body.items.item[0].title);
-		      console.log(msg.response.body.items.item[0].sourceTitle);
-		      $("h1").text(msg.response.body.items.item[0].title);
-		   
-		    })
-		    .fail(function(jqXHR, textStatus, errorThrown) {
-		      console.error("AJAX Request Failed: " + textStatus, errorThrown);
-		    });
+
+      $.ajax({
+    	type: 'GET',
+        url: "http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period?from=20101118&to=20101217&cPage=1&rows=10&place=&gpsxfrom=&gpsyfrom=&gpsxto=&gpsyto=&keyword=&sortStdr=1",
+        data:{serviceKey: "dw13O1bisWHxtxSYLcTJ%2FRibQvxPCzAWvEyjdrGKbDm3bopoDo%2BdazvXqnMI5BGwLv0WrICm6oXohW2wd1o92A%3D%3D"},
+        dataType: 'xml',
+        success: function(data) {
+          const outputDiv = document.getElementById('output');
+          outputDiv.innerHTML = new XMLSerializer().serializeToString(data);
+        },
+        error: function(error) {
+          console.error(error);
+        }
+      });
     </script>
     
 		

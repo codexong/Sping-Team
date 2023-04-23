@@ -21,23 +21,17 @@
 </head>
 <body>
    <h1>API 결과</h1>
-	<div id="result"></div>
-	<div id="period"></div>
-	
+   
 	<script>
-		function callApi() {
+		function Api() {
 		  $.ajax({
-		    url: "myapi", // 호출할 API의 URL
+		    url: "api", // 호출할 API의 URL
 		    type: "GET",
 		    success: function(data) {
-		    	data  = JSON.parse(data)
+		    	data = $.parseXML(data)
 		    	alert(data)
 		      // API 호출 성공 시 결과를 화면에 표시
-		       console.log(data);
-		     
-		        $("#result").append(data.response.body.items.item[0].title);
-		        $("#period").append(data.response.body.items.item[0].period);
-		    
+		       console.log(data);		    
 		    },
 		    error: function(error) {
 		      // API 호출 실패 시 에러 메시지를 화면에 표시
@@ -46,7 +40,7 @@
 		  });
 		}
 		$(document).ready(function() {
-			callApi();
+			Api();
 		});
 	</script>
 

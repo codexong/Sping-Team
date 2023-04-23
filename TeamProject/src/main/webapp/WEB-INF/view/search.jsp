@@ -20,39 +20,28 @@
 <title>Welcome</title>
 </head>
 <body>	
-	<%@ include file="login_nav.jsp" %>
-
-	<%@ include file="main_nav.jsp" %>
 	
 	<h1></h1>
 
-	 <script>
-	 
-	 $.ajax({
-		    method: "GET",
-		    url: "http://api.kcisa.kr/API_CNV_050/request",
-		    data: {
-				      
-			    	serviceKey: "5cf87b5d-627f-4ff6-b396-318e3e43bce7",
-			    	numOfRows: "30",
-			        pageNo: "4"
-		   		   },
-		    headers: { Accept: "application/json"}
-		  })
-		    .done(function(msg) {
-		      console.log(msg);
-		      console.log(msg.response.body.items);
-		      console.log(msg.response.body.items.item[0].title);
-		      console.log(msg.response.body.items.item[0].sourceTitle);
-		      $("h1").text(msg.response.body.items.item[0].title);
-		   
-		    })
-		    .fail(function(jqXHR, textStatus, errorThrown) {
-		      console.error("AJAX Request Failed: " + textStatus, errorThrown);
-		    });
-    </script>
-    
-		
-	<%@ include file="footer.jsp" %>
+	<script>
+		function search() {
+		  $.ajax({
+			url: "search",
+		    type: "GET",
+		    success: function(data) {
+		    	data  = JSON.parse(data)
+		    	alert(data)
+		        console.log(data);
+		    },
+		    error: function(jqXHR, textStatus, errorThrown) {
+		      console.error(textStatus + ": " + errorThrown);
+		    }
+		  });
+		}
+		$(document).ready(function() {
+			search();
+		});
+	</script>
+
 </body>
 </html>
