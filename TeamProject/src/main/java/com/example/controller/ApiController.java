@@ -2,6 +2,7 @@ package com.example.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.BufferedReader;
@@ -12,13 +13,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 @Controller
+@RequestMapping("/apilist/*")
 public class ApiController {
-		@GetMapping("/")
 		
-	public String home() {
-			
-			return "myapi"; //view 파일 myapi.jsp
-		}
+	@GetMapping("/api")	 
+	public String home() {return "myapi";}
 	
 
 	@GetMapping(value = "/myapi", produces = "text/plain;charset=UTF-8")
