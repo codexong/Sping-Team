@@ -15,9 +15,9 @@ import lombok.extern.log4j.Log4j;
 @Service
 @AllArgsConstructor
 public class BoardServiceImpl implements BoardService{
-	
+
 	private BoardMapper mapper;
-	
+
 	@Override
 	public void register(BoardVO board) {
 		log.info("register............." + board);
@@ -46,12 +46,12 @@ public class BoardServiceImpl implements BoardService{
 	 * @Override public List<BoardVO> getList() {
 	 * log.info("getList................."); return mapper.getList(); }
 	 */
-	
+
 	@Override
 	public List<BoardVO> getList(Criteria cri){
-		
+
 		log.info("get List With Criteria" + cri);
-		
+
 		return mapper.getListWithPaging(cri);
 	}
 }

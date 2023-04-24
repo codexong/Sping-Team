@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ApiController2 {
-	
+
 	@GetMapping("/8")
 	public String home() {return "search";}
 
