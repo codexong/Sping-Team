@@ -1,63 +1,77 @@
 package com.example.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 
-import org.springframework.stereotype.Controller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-@Controller
-@RequestMapping("/apilist/*")
+@RestController
 public class ApiController {
 
-	@GetMapping("/api")
-	public String home() {return "myapi";}
+	@ResponseBody
+	@GetMapping(value = "/test2", produces = "application/html; charset=UTF-8")
+    public String getExhibitionInfoWithImages() throws IOException, ParserConfigurationException, SAXException, JSONException {
+        String key = "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==";
+        JSONArray jsonArray = new JSONArray();
 
+        try {
+            String url = "http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period"
+                    + "?ServiceKey=" + key;
 
-	@GetMapping(value = "/myapi", produces = "text/plain;charset=UTF-8")
-    @ResponseBody
-    public String callApi() throws IOException {
-        StringBuilder urlBuilder = new StringBuilder("http://api.kcisa.kr/API_CNV_050/request"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=7722e809-bbcd-419b-a769-f4dfe7b83fa1"); /*서비스키*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*세션당 요청레코드수*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지수*/
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(url);
 
-        System.out.println(urlBuilder.toString());
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            doc.getDocumentElement().normalize();
 
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
+            NodeList nList = doc.getElementsByTagName("perforList");
 
-        BufferedReader rd;
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node nNode = nList.item(temp);
+                Element eElement = (Element) nNode;
 
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String title = getTagValue("title", eElement);
+                String place = getTagValue("place", eElement);
+                String startDate = getTagValue("startDate", eElement);
+                String endDate = getTagValue("endDate", eElement);
+                String realmName = getTagValue("realmName", eElement);
+                String thumbnailUrl = getTagValue("thumbnail", eElement);
 
-        } else {
+                JSONObject jsonObj = new JSONObject();
+                jsonObj.put("title", title);
+                jsonObj.put("place", place);
+                jsonObj.put("startDate", startDate);
+                jsonObj.put("endDate", endDate);
+                jsonObj.put("realmName", realmName);
+                jsonObj.put("thumbnail", thumbnailUrl);
+                jsonArray.put(jsonObj);
+            }
 
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-             System.out.println(line);
-            sb.append(line);
+        return jsonArray.toString();
+    }
 
-        }
-        rd.close();
-        conn.disconnect();
-        System.out.println(sb.toString());
-
-        return sb.toString();
+    // tag값의 정보를 가져오는 함수
+    public static String getTagValue(String tag, Element eElement) {
+        String result = "";
+        NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
+        result = nlList.item(0).getTextContent();
+        return result;
     }
 }

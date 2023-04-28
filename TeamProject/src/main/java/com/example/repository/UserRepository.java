@@ -1,7 +1,5 @@
 package com.example.repository;
 
-import com.example.domain.MemberDTO;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +9,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.example.domain.MemberDTO;
 
 @Repository
 public class UserRepository {

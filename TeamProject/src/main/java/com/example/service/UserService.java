@@ -10,10 +10,10 @@ import com.example.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	public MemberDTO login(String id, String password) {
 		try {
 			return userRepository.findByUserIdAndPassword(id, password);
@@ -21,5 +21,5 @@ public class UserService {
 			e.printStackTrace();
 			return null;
 		}
-	}	
+	}
 }

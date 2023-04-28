@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=utf-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
@@ -28,9 +28,9 @@
 <title>회원 가입</title>
 </head>
 <body>
-		
-	<jsp:include page="/login_nav.jsp"/>
-	<jsp:include page="/main_nav.jsp"/>
+	
+	<%@include file="../login_nav.jsp" %>	
+	<%@include file="../main_nav.jsp" %>	
 
 	<div class="container" style="width: 400px; margin-top: 10px">
 		<form name="newMember" class="form-horizontal"  action="processAddMember.jsp" method="post" onsubmit="return checkForm()">
@@ -81,7 +81,7 @@
 		</form>
 	</div>
 	
-	<jsp:include page="/footer.jsp"/>
+	<%@include file="../footer.jsp" %>
 
 </body>
 </html>

@@ -28,8 +28,8 @@
 </head>
 <body onload="init()">
 		
-	<jsp:include page="/login_nav.jsp"/>
-	<jsp:include page="/main_nav.jsp"/>
+
+	<%@include file="../main_nav.jsp" %>	
 	
 	<c:forEach var="row" items="${resultSet.rows}">
 	
@@ -82,7 +82,7 @@
 	</div>
 	</c:forEach>
 	
-	<jsp:include page="/footer.jsp"/>
+	<%@include file="../footer.jsp" %>
 
 </body>
 </html>

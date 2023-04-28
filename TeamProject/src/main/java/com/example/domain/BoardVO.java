@@ -1,16 +1,13 @@
 package com.example.domain;
 
-import java.util.Date;
-
 import lombok.Data;
 
 @Data
 public class BoardVO {
 
-	private Long bno;
+	private Long id;
+	private String adult;
+	private String child;
 	private String title;
-	private String content;
-	private String writer;
-	private Date regdate;
-	private Date updateDate;
+
 }
