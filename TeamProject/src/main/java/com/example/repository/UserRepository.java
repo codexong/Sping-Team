@@ -39,6 +39,7 @@ public class UserRepository {
                 member.setPassword(rs.getString("password"));
                 member.setName(rs.getString("name"));
                 member.setEmail(rs.getString("email"));
+                member.setNickname(rs.getString("nickname"));
             }
 
             return member;
@@ -63,5 +64,98 @@ public class UserRepository {
             }
         }
     }
+    
+    public void save(MemberDTO member) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
 
+        try {
+            conn = dataSource.getConnection();
+
+            pstmt = conn.prepareStatement("INSERT INTO member(id, password, name, email, nickname) VALUES(?, ?, ?, ?, ?)");
+            pstmt.setString(1, member.getId());
+            pstmt.setString(2, member.getPassword());
+            pstmt.setString(3, member.getName());
+            member.setEmail(member.getMail1(), member.getMail2());
+            pstmt.setString(4, member.getEmail());
+            pstmt.setString(5, member.getNickname());
+
+            pstmt.executeUpdate();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+    
+    public void update(MemberDTO member) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+
+            pstmt = conn.prepareStatement("UPDATE member SET password=?, email=?, nickname=? WHERE id=?");
+            
+            pstmt.setString(1, member.getPassword());
+            member.setEmail(member.getMail1(), member.getMail2());
+            pstmt.setString(2, member.getEmail());
+            pstmt.setString(3, member.getNickname());
+            pstmt.setString(4, member.getId());
+
+            pstmt.executeUpdate();
+            
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+    
+    public void delete(MemberDTO member) throws SQLException {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = dataSource.getConnection();
+
+            pstmt = conn.prepareStatement("DELETE FROM member WHERE id=?");
+            
+            pstmt.setString(1, member.getId());
+
+            pstmt.executeUpdate();
+            
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
 }
