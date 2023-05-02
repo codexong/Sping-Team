@@ -64,7 +64,7 @@ public class UserRepository {
             }
         }
     }
-    
+
     public void save(MemberDTO member) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -96,7 +96,7 @@ public class UserRepository {
             }
         }
     }
-    
+
     public void update(MemberDTO member) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -105,7 +105,7 @@ public class UserRepository {
             conn = dataSource.getConnection();
 
             pstmt = conn.prepareStatement("UPDATE member SET password=?, email=?, nickname=? WHERE id=?");
-            
+
             pstmt.setString(1, member.getPassword());
             member.setEmail(member.getMail1(), member.getMail2());
             pstmt.setString(2, member.getEmail());
@@ -113,7 +113,7 @@ public class UserRepository {
             pstmt.setString(4, member.getId());
 
             pstmt.executeUpdate();
-            
+
         } finally {
             if (pstmt != null) {
                 try {
@@ -129,7 +129,7 @@ public class UserRepository {
             }
         }
     }
-    
+
     public void delete(MemberDTO member) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -138,11 +138,11 @@ public class UserRepository {
             conn = dataSource.getConnection();
 
             pstmt = conn.prepareStatement("DELETE FROM member WHERE id=?");
-            
+
             pstmt.setString(1, member.getId());
 
             pstmt.executeUpdate();
-            
+
         } finally {
             if (pstmt != null) {
                 try {

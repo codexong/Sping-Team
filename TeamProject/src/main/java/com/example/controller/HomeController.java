@@ -25,13 +25,14 @@ public class HomeController {
 	public String home() {
 		return "home";
 	}
-	
-	//로그인 화면 이
+
+	//로그인 화면 이동
 	@GetMapping("/login")
 	public String login() {
 		return "member/loginMember";
 	}
-	//로그인 처리 
+
+	//로그인 처리
 	@PostMapping("/processLoginMember")
 	public String login(@RequestParam("id") String id, @RequestParam("password") String password, HttpSession session,
 			RedirectAttributes rttr) {
@@ -42,39 +43,40 @@ public class HomeController {
 			rttr.addFlashAttribute("msg", "로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요.");
 			return "redirect:/login";
 		} else { // 로그인 성공 시
+			rttr.addFlashAttribute("welcomeMsg", "환영합니다, " + user.getNickname() + "님!");
 			session.setAttribute("loginUser", user); // 세션에 로그인 정보 저장
 			return "redirect:/";
 		}
 	}
-	
-	//로그아웃 
+
+	//로그아웃
 	@GetMapping("/logout")
 	public String logoutMember(HttpSession session) {
 		session.invalidate(); // 세션 무효화
 		return "redirect:/";
 	}
-	
-	//회원가입 페이지 이동 
+
+	//회원가입 페이지 이동
 	@GetMapping("/addMember")
 	public String addMember(Model model) {
 		model.addAttribute("memberDTO", new MemberDTO());
 		return "member/addMember";
 	}
-	
-	//회원가입 처리 
+
+	//회원가입 처리
 	@PostMapping("/processAddMember")
 	public String join(@ModelAttribute("memberDTO") MemberDTO memberDTO, Model model) {
 		boolean result = userService.join(memberDTO);
 		if (result) {
 			model.addAttribute("msg", "회원가입성공");
-			return "redirect:/processAddMember";
+			return "redirect:/login";
 		} else {
 			model.addAttribute("msg", "회원가입에실패.");
 			return "redirect:/join";
 		}
 	}
-	
-	//회원수정 페이지 이동 
+
+	//회원수정 페이지 이동
 	@GetMapping("/updateMember")
 	public String updateMember(Model model, HttpSession session) {
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
@@ -86,8 +88,8 @@ public class HomeController {
 			return "member/updateMember";
 		}
 	}
-	
-	//회원수정 처리 
+
+	//회원수정 처리
 	@PostMapping("/processUpdateMember")
 	public String updateMember(@ModelAttribute("memberDTO") MemberDTO memberDTO, Model model) {
 	    boolean result = userService.updateUser(memberDTO);
@@ -99,8 +101,8 @@ public class HomeController {
 	        return "redirect:/updateMember";
 	    }
 	}
-	
-	//회원 탈퇴 
+
+	//회원 탈퇴
 	@GetMapping("/deleteMember")
 	public String deleteMember(HttpSession session){
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
@@ -109,8 +111,8 @@ public class HomeController {
 		} else {
 			 MemberDTO memberDTO = (MemberDTO) session.getAttribute("loginUser");
 			 boolean result = userService.deleteUser(memberDTO);
-			 session.invalidate(); 
+			 session.invalidate();
 			 return "redirect:/";
 		}
-	}	
+	}
 }

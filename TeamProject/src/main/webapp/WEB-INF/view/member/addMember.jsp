@@ -5,9 +5,8 @@
 <style type="text/css">
 .btn{ background: linear-gradient(to right, #F7A4A4, #FEA679);}
 </style>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://kit.fontawesome.com/930e9d87c4.js"></script>
 <script type="text/javascript">
 	function checkForm() {
 		if (!document.newMember.id.value) {
@@ -24,10 +23,6 @@
 			alert("비밀번호를 동일하게 입력하세요.");
 			return false;
 		}
-	}
-	
-	function sucess(){
-	    $('#sucess-modal').modal('show')
 	}
 </script>
 <title>회원 가입</title>
@@ -62,7 +57,7 @@
 			<div class="input-group mb-3">
 				<label class="input-group-text">이메일</label>
 				<input type="text" class="form-control" name="mail1" maxlength="50">@ 
-				<select name="mail2" class="form-control">
+				<select name="mail2"class="form-control">
 					<option>naver.com</option>
 					<option>daum.net</option>
 					<option>gmail.com</option>
@@ -77,32 +72,13 @@
 	
 			<div class="form-group row" style="margin-top: 10px">
 				<div class="col-sm-offset-2 col-sm-10 ">
-				<button type="submit" class="btn" style="color: white;" onclick="sucess()">회원가입</button>
+				<button type="submit" class="btn" style="color: white;">회원가입</button>
 				<button type="reset" class="btn" style="color: white;" onclick="reset()">취소</button>
 				</div>
 			</div>
+			
 		</form>
 	</div>
-	
-	<div class="modal" id="sucess-modal" tabindex="-1">
-     <div class="modal-dialog">
-       <div class="modal-content">
-         <div class="modal-header">
-           <h5 class="modal-title">Modal title</h5>
-           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-             <span aria-hidden="true">&times;</span>
-           </button>
-         </div>
-         <div class="modal-body">
-           <p>Modal body text goes here.</p>
-         </div>
-         <div class="modal-footer">
-           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-           <button type="button" class="btn btn-primary">Save changes</button>
-         </div>
-       </div>
-     </div>
-   </div>
 	
 	<%@include file="../footer.jsp" %>
 

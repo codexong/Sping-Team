@@ -15,13 +15,12 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<div class="container">
-		<a class="navbar-brand" href="<c:url value="/" />">
-		<img src="${pageContext.request.contextPath}/resources/imges/LOGO.png" width="55" height="50" style="display: inline-block; margin-bottom: 15px;">
-		<span class="navbar-text" style="display: inline-block; font-size: 45px;">Exhibition Platform</span>
-		</a>
-	</div>
-
+  <div class="container">
+    <a class="navbar-brand" href="<c:url value="/"/>"> 
+      <img src="<%=request.getContextPath()%>/resources/imges/LOGO.png" width="55" height="50" style="display:inline-block; margin-bottom: 8px;">
+      <h1 class="navbar-text" style="display:inline-block;">Exhibition Platform</h1>
+    </a>
+  </div>
 	<div class="container-md" style="display: flex; justify-content: flex-end; align-items: center;">
 		<c:choose>
 			<c:when test="${empty loginUser}">
@@ -29,7 +28,7 @@
 				<a class="navbar-brand" href='<c:url value="/addMember"/>'>회원 가입</a>
 			</c:when>
 			<c:otherwise>
-				<a class="navbar-brand">[${sessionScope.loginUser.nickname}님]</a>
+				<a class="navbar-brand">[${sessionScope.loginUser.name}님]</a>
 				<a class="navbar-brand" href="../buy/mybuy.jsp?id=${loginUser}"> 내 활동 </a>
 				<a class="navbar-brand" href="<c:url value="/logout"/>">로그아웃 </a>
 				<a class="navbar-brand" href="<c:url value="/updateMember"/>">회원 수정</a>
