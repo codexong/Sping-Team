@@ -34,11 +34,12 @@
 
 	
 <h1>구매하기</h1>	
+
 <div class="container mt-4">
   <div class="row">
     <div class="col">
       <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="<%= request.getParameter("thumbnail") %>" alt="Card image cap">
+        <img class="card-img-top" src="<%= request.getParameter("thumbnail") %>">
       </div>
     </div>
     <div class="col">
@@ -79,8 +80,9 @@
           </div>
         </div>
       </div>
+     </form>
     </div>
-    </form>
+  
   </div>
 </div>
     

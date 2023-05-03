@@ -19,18 +19,20 @@
 </style>
 <meta charset="UTF-8">
 <title>Exhibition Info</title>
-	
+   
 </head>
 <body>
-	<%@ include file="login_nav.jsp" %>
+   <%@ include file="login_nav.jsp" %>
 
-	<%@ include file="main_nav.jsp" %>
-	
-	
+   <%@ include file="main_nav.jsp" %>
+   
+   
 <div class="container">
     <div class="row row-cols-4" id="eventList">
     </div>
  </div>
+String encodedString = URLEncoder.encode(originalString, "UTF-8");
+String replacedString = encodedString.replaceAll("[%5B%5D]", "");
 
 
  <script>
@@ -48,8 +50,10 @@
           $("#eventList").empty();
 
           for (var i = 0; i < jsonArray.length; i++) {
-        	var realmName = jsonArray[i].realmName;  
-            var title = jsonArray[i].title;
+           var realmName = jsonArray[i].realmName;  
+           var title = jsonArray[i].title.replace(/[\[\]]/g, '');
+           var encodedTitle = encodeURIComponent(title);
+
             var place = jsonArray[i].place;
             var startDate = jsonArray[i].startDate;
             var endDate = jsonArray[i].endDate;
@@ -79,14 +83,16 @@
             btn1.attr("data-card-info", JSON.stringify(jsonArray[i]));
             btn1.click(function() {
                 var cardInfo = JSON.parse($(this).attr("data-card-info"));
-                var queryString = "?realmName=" + cardInfo.realmName + "&title=" + cardInfo.title + "&place=" + cardInfo.place + "&thumbnail=" + encodeURIComponent(cardInfo.thumbnail);
+                var queryString = "?realmName=" + cardInfo.realmName + "&title=" + encodeURIComponent(cardInfo.title) + "&place=" + cardInfo.place + "&thumbnail=" + encodeURIComponent(cardInfo.thumbnail);
                 var contextPath = "<%=request.getContextPath()%>";
                 var url = contextPath + "/buy";
                 window.location.href = url + queryString;
+                
             });
             
             cardBody.append(btn1);
-
+         
+            
             // 버튼 2
             var btn2 = $("<button>").addClass("btn btn-secondary float-right ml-2").text("리뷰모음");
             btn2.attr("id", "btn2-" + i);
@@ -114,7 +120,6 @@
 </script>
 
 
-
-	<%@ include file="footer.jsp" %>
+   <%@ include file="footer.jsp" %>
 </body>
 </html>
