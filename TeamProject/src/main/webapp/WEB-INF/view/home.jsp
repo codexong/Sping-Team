@@ -27,13 +27,10 @@
    <%@ include file="main_nav.jsp" %>
    
    
-<div class="container">
+ <div class="container">
     <div class="row row-cols-4" id="eventList">
     </div>
  </div>
-String encodedString = URLEncoder.encode(originalString, "UTF-8");
-String replacedString = encodedString.replaceAll("[%5B%5D]", "");
-
 
  <script>
     $(document).ready(function() {
@@ -95,10 +92,15 @@ String replacedString = encodedString.replaceAll("[%5B%5D]", "");
             
             // 버튼 2
             var btn2 = $("<button>").addClass("btn btn-secondary float-right ml-2").text("리뷰모음");
-            btn2.attr("id", "btn2-" + i);
+            btn2.attr("data-card-info", JSON.stringify(jsonArray[i]));
             btn2.click(function() {
-                window.location.href = "eventPage?eventId=" + jsonArray[i].id + "&btnId=2";
+                var cardInfo = JSON.parse($(this).attr("data-card-info"));
+                var queryString = "?realmName=" + cardInfo.realmName + "&title=" + encodeURIComponent(cardInfo.title) + "&place=" + cardInfo.place + "&thumbnail=" + encodeURIComponent(cardInfo.thumbnail);
+                var contextPath = "<%=request.getContextPath()%>";
+                var url = contextPath + "/titleboard";
+                window.location.href = url + queryString;      
             });
+            
             cardBody.append(btn2);
 
             // 버튼 3
@@ -118,8 +120,6 @@ String replacedString = encodedString.replaceAll("[%5B%5D]", "");
   });
 });
 </script>
-
-
    <%@ include file="footer.jsp" %>
 </body>
 </html>

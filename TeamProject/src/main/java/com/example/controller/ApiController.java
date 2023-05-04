@@ -22,14 +22,17 @@ import org.xml.sax.SAXException;
 public class ApiController {
 
 	@ResponseBody
-	@GetMapping(value = "/test2", produces = "application/html; charset=UTF-8")
+	@GetMapping(value = "/test2", produces = "text/html; charset=UTF-8")
     public String getExhibitionInfoWithImages() throws IOException, ParserConfigurationException, SAXException, JSONException {
         String key = "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==";
+        String sido = "서울";
         JSONArray jsonArray = new JSONArray();
 
         try {
-            String url = "http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period"
-                    + "?ServiceKey=" + key;
+             String url = "http://www.culture.go.kr/openapi/rest/publicperformancedisplays/area"
+               + "?ServiceKey=" + key  + "&sido=" + sido;
+            
+            System.out.println(url);
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

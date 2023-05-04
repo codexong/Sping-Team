@@ -1,68 +1,117 @@
 package com.example.controller;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.domain.BoardVO;
+import com.example.domain.BuyDTO;
+import com.example.domain.MemberDTO;
 import com.example.service.BoardService;
+import com.example.service.BuyService;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 @Controller
-@Log4j
-@RequestMapping("/buy/*")
-@AllArgsConstructor
 public class BoardController {
 
-	private BoardService service;
+	@Autowired
+	private BoardService boardService;
+	
+	@Autowired
+	private BuyService buyService;	
 
-	@GetMapping("/mybuy")
-	public void register() {}
-
-	@GetMapping("/list") //목록 조회
-	public void list(Model model) {
-		log.info("list");
-		model.addAttribute("list", service.getList());
+	@GetMapping("/board")
+	public String getBoardList(Model model) throws Exception {
+		model.addAttribute("boardList", boardService.getBoardList());
+		return "board/list";
 	}
 
-	@PostMapping("/register") //insert 등록처리
-	public String register(BoardVO board, RedirectAttributes rttr) {
-
-		log.info("register : " + board);
-		service.register(board);
-		rttr.addFlashAttribute("result", board.getId());
-		return "redirect:/board/list";
+	@GetMapping("/board/{id}")
+	public String getBoard(@PathVariable("id") String id, Model model) throws Exception {
+		BoardVO board = boardService.getBoard(id);
+		model.addAttribute("board", board);
+		return "board/detail"; // list.jsp로 이동
 	}
+	
+	@GetMapping("/board/write")
+	public String writeBoardForm(Model model, HttpSession session, @RequestParam("num") int num) {
+	MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
+	if (loginUser == null) {
+		return "redirect:/login"; // 로그인되어있지 않으면 로그인 화면으로 이동
+	} else {
+		try {
+			List<BuyDTO> buyList = buyService.myticket(num);
+			 model.addAttribute("buyDTO", buyList);
+			 model.addAttribute("memberDTO", loginUser);
+			return "board/write";
 
-	@GetMapping({"/get", "/modify"})
-	public void get(@RequestParam("bno") Long bno, Model model) {
-		log.info("/get");
-		model.addAttribute("board", service.get(bno));
-	}
-
-	@PostMapping("/modify") //update
-	public String modify(BoardVO board, RedirectAttributes rttr) {
-
-		log.info("modify : " + board);
-		if(service.modify(board)) {
-			rttr.addFlashAttribute("result", "success");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
 		}
-		return "redirect:/board/list";
+	 }
+   }
+
+	@PostMapping("/board/write")
+	public String writeBoard(@RequestParam("title") String title,
+							@RequestParam("nickname") String nickname,
+							@RequestParam("text") String text,
+							@RequestParam("grade") String grade,
+	RedirectAttributes redirectAttrs) throws Exception {
+		BoardVO board = new BoardVO();
+		board.setTitle(title);
+		board.setNickname(nickname);
+		board.setText(text);
+		board.setGrade(grade);
+		boardService.insertBoard(board);
+		redirectAttrs.addFlashAttribute("msg", "글이 등록되었습니다.");
+		return "board/list";
 	}
 
-	@RequestMapping(value = "/remove" , method = {RequestMethod.GET, RequestMethod.POST})
-	public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
+	@GetMapping("/board/{id}/update")
+	public String updateBoardForm(@PathVariable("id") String id, Model model) throws Exception {
+		model.addAttribute("board", boardService.getBoard(id));
+		return "board/update";
+	}
 
-		log.info("remove : " + bno);
-		if(service.remove(bno)) {
-			rttr.addFlashAttribute("result", "success");
+	@PostMapping("/board/update")
+	public String updateBoard(BoardVO board, RedirectAttributes redirectAttrs) throws Exception {
+		boardService.updateBoard(board);
+		redirectAttrs.addFlashAttribute("msg", "글이 수정되었습니다.");
+		return "redirect:/board/" + board.getNickname();
+	}
+
+	@GetMapping("/board/{id}/delete")
+	public String deleteBoard(@PathVariable("id") String id, RedirectAttributes redirectAttrs) throws Exception {
+		boardService.deleteBoard(id);
+		redirectAttrs.addFlashAttribute("msg", "글이 삭제되었습니다.");
+		return "redirect:/board";
+	}
+	
+	@GetMapping("/titleboard")
+	public String board(Model model, @RequestParam("title") String title) {
+		try {
+			List<BoardVO> boardList = boardService.board(title);
+			model.addAttribute("BoardVO", boardList);
+			return "board/title";
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
 		}
-		return "redirect:/board/list";
-	}
+
+  }
+	
 }
+
+
+
