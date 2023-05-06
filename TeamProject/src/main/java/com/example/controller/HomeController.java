@@ -1,6 +1,5 @@
 package com.example.controller;
 
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,18 @@ public class HomeController {
 		return "home";
 	}
 
-	//로그인 화면 이동
+	@GetMapping("/area")
+	public String area() {
+		return "area";
+	}
+
+	// 로그인 화면 이동
 	@GetMapping("/login")
 	public String login() {
 		return "member/loginMember";
 	}
 
-	//로그인 처리
+	// 로그인 처리
 	@PostMapping("/processLoginMember")
 	public String login(@RequestParam("id") String id, @RequestParam("password") String password, HttpSession session,
 			RedirectAttributes rttr) {
@@ -49,24 +53,24 @@ public class HomeController {
 		}
 	}
 
-	//로그아웃
+	// 로그아웃
 	@GetMapping("/logout")
 	public String logoutMember(HttpSession session) {
 		session.invalidate(); // 세션 무효화
 		return "redirect:/";
 	}
 
-	//회원가입 페이지 이동
+	// 회원가입 페이지 이동
 	@GetMapping("/addMember")
 	public String addMember(Model model) {
 		model.addAttribute("memberDTO", new MemberDTO());
 		return "member/addMember";
 	}
 
-	//회원가입 처리
+	// 회원가입 처리
 	@PostMapping("/processAddMember")
 	public String join(@ModelAttribute("memberDTO") MemberDTO memberDTO, Model model) {
-		boolean result = userService.join(memberDTO);
+		boolean result = userService.save(memberDTO);
 		if (result) {
 			model.addAttribute("msg", "회원가입성공");
 			return "redirect:/login";
@@ -76,7 +80,7 @@ public class HomeController {
 		}
 	}
 
-	//회원수정 페이지 이동
+	// 회원수정 페이지 이동
 	@GetMapping("/updateMember")
 	public String updateMember(Model model, HttpSession session) {
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
@@ -89,30 +93,30 @@ public class HomeController {
 		}
 	}
 
-	//회원수정 처리
+	// 회원수정 처리
 	@PostMapping("/processUpdateMember")
 	public String updateMember(@ModelAttribute("memberDTO") MemberDTO memberDTO, Model model) {
-	    boolean result = userService.updateUser(memberDTO);
-	    if (result) {
-	        model.addAttribute("msg", "회원정보 수정이 완료되었습니다.");
-	        return "redirect:/";
-	    } else {
-	        model.addAttribute("msg", "회원정보 수정에 실패하였습니다.");
-	        return "redirect:/updateMember";
-	    }
+		boolean result = userService.updateUser(memberDTO);
+		if (result) {
+			model.addAttribute("msg", "회원정보 수정이 완료되었습니다.");
+			return "redirect:/";
+		} else {
+			model.addAttribute("msg", "회원정보 수정에 실패하였습니다.");
+			return "redirect:/updateMember";
+		}
 	}
 
-	//회원 탈퇴
+	// 회원 탈퇴
 	@GetMapping("/deleteMember")
-	public String deleteMember(HttpSession session){
+	public String deleteMember(HttpSession session) {
 		MemberDTO loginUser = (MemberDTO) session.getAttribute("loginUser");
 		if (loginUser == null) {
 			return "redirect:/login"; // 로그인되어있지 않으면 로그인 화면으로 이동
 		} else {
-			 MemberDTO memberDTO = (MemberDTO) session.getAttribute("loginUser");
-			 boolean result = userService.deleteUser(memberDTO);
-			 session.invalidate();
-			 return "redirect:/";
+			MemberDTO memberDTO = (MemberDTO) session.getAttribute("loginUser");
+			boolean result = userService.deleteUser(memberDTO);
+			session.invalidate();
+			return "redirect:/";
 		}
 	}
 }

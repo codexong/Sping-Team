@@ -23,33 +23,33 @@ public class UserService {
 		}
 	}
 
-	 public boolean join(MemberDTO memberDTO) {
-	        try {
-	            userRepository.save(memberDTO);
-	            return true;
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            return false;
-	        }
-	    }
-
-	 public boolean updateUser(MemberDTO memberDTO) {
-			try {
-				userRepository.update(memberDTO);
-				return true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return false;
-			}
+	public boolean save(MemberDTO memberDTO) {
+		try {
+			userRepository.save(memberDTO);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
+	}
 
-	 public boolean deleteUser(MemberDTO memberDTO) {
-			try {
-				userRepository.delete(memberDTO);
-				return true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-				return false;
-			}
+	public boolean updateUser(MemberDTO memberDTO) {
+		try {
+			userRepository.update(memberDTO);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
+	}
+
+	public boolean deleteUser(MemberDTO memberDTO) {
+		try {
+			userRepository.delete(memberDTO);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

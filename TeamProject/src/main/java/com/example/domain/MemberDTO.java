@@ -15,6 +15,6 @@ public class MemberDTO {
 	private String mail2;
 
 	public void setEmail(String mail1, String mail2) {
-	        this.email = mail1 + "@" + mail2;
-	    }
+		this.email = mail1 + "@" + mail2;
+	}
 }

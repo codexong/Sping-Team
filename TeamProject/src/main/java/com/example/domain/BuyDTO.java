@@ -5,10 +5,11 @@ import lombok.Data;
 @Data
 public class BuyDTO {
 
+	private int num;
 	private String id;
 	private String adult;
 	private String child;
 	private String title;
-	private int num;
+	private String thumbnail;
 
 }

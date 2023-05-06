@@ -27,9 +27,15 @@
 		    $('#myModal').modal('show');
 		    return false;
 		}
-		 $('#sucess').modal('show');
-		 return false;
+	}
+	
+	$(document).ready(function() {
+	    var msg = getUrlParameter('msg');
+	    if (msg == '회원가입성공') {
+	        $('#sucess').modal('show');
 	    }
+	});
+		
 </script>
 
 <title>회원 가입</title>

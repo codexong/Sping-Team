@@ -1,6 +1,8 @@
 package com.example.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,59 +24,66 @@ import org.xml.sax.SAXException;
 public class ApiController {
 
 	@ResponseBody
-	@GetMapping(value = "/test2", produces = "text/html; charset=UTF-8")
-    public String getExhibitionInfoWithImages() throws IOException, ParserConfigurationException, SAXException, JSONException {
-        String key = "0OhBU7ZCGIobDVKDeBJDpmDRqK3IRNF6jlf/JB2diFAf/fR2czYO9A4UTGcsOwppV6W2HVUeho/FPwXoL6DwqA==";
-        String sido = "서울";
-        JSONArray jsonArray = new JSONArray();
+	@GetMapping(value = "/test2", produces = "application/html; charset=UTF-8")
+	public String getExhibitionInfoWithImages()
+			throws IOException, ParserConfigurationException, SAXException, JSONException {
+		String key = "ILEuvHedm5Mts3ZpudoU8a9%2BDdaOwoecKJOjXjU%2B9ojDsxSn8dG%2BRugXbJrL4r4biQE3pvzrt4mCSa1caDW8Vw%3D%3D";
+		JSONArray jsonArray = new JSONArray();
 
-        try {
-             String url = "http://www.culture.go.kr/openapi/rest/publicperformancedisplays/area"
-               + "?ServiceKey=" + key  + "&sido=" + sido;
-            
-            System.out.println(url);
+		try {
+			String url = "http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period" + "?ServiceKey=" + key
+					+ "&rows=80";
 
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(url);
+			System.out.println(url);
 
-            doc.getDocumentElement().normalize();
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(url);
 
-            NodeList nList = doc.getElementsByTagName("perforList");
+			doc.getDocumentElement().normalize();
 
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-                Node nNode = nList.item(temp);
-                Element eElement = (Element) nNode;
+			NodeList nList = doc.getElementsByTagName("perforList");
 
-                String title = getTagValue("title", eElement);
-                String place = getTagValue("place", eElement);
-                String startDate = getTagValue("startDate", eElement);
-                String endDate = getTagValue("endDate", eElement);
-                String realmName = getTagValue("realmName", eElement);
-                String thumbnailUrl = getTagValue("thumbnail", eElement);
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				Element eElement = (Element) nNode;
 
-                JSONObject jsonObj = new JSONObject();
-                jsonObj.put("title", title);
-                jsonObj.put("place", place);
-                jsonObj.put("startDate", startDate);
-                jsonObj.put("endDate", endDate);
-                jsonObj.put("realmName", realmName);
-                jsonObj.put("thumbnail", thumbnailUrl);
-                jsonArray.put(jsonObj);
-            }
+				List<String> title = getTagValues("title", eElement);
+				List<String> place = getTagValues("place", eElement);
+				List<String> startDate = getTagValues("startDate", eElement);
+				List<String> endDate = getTagValues("endDate", eElement);
+				List<String> realmName = getTagValues("realmName", eElement);
+				List<String> area = getTagValues("area", eElement);
+				List<String> thumbnailUrl = getTagValues("thumbnail", eElement);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+				JSONObject jsonObj = new JSONObject();
+				jsonObj.put("title", title);
+				jsonObj.put("place", place);
+				jsonObj.put("startDate", startDate);
+				jsonObj.put("endDate", endDate);
+				jsonObj.put("realmName", realmName);
+				jsonObj.put("area", area);
+				jsonObj.put("thumbnail", thumbnailUrl);
+				jsonArray.put(jsonObj);
+			}
 
-        return jsonArray.toString();
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-    // tag값의 정보를 가져오는 함수
-    public static String getTagValue(String tag, Element eElement) {
-        String result = "";
-        NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
-        result = nlList.item(0).getTextContent();
-        return result;
-    }
+		return jsonArray.toString();
+	}
+
+	public static List<String> getTagValues(String tag, Element eElement) {
+		List<String> results = new ArrayList<>();
+		NodeList nlList = eElement.getElementsByTagName(tag);
+		for (int i = 0; i < nlList.getLength(); i++) {
+			Node node = nlList.item(i);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				Element element = (Element) node;
+				results.add(element.getTextContent());
+			}
+		}
+		return results;
+	}
 }
